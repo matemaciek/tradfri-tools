@@ -12,24 +12,8 @@ git checkout dtls
 git submodule update --init --recursive
 ./autogen.sh
 ./configure --disable-documentation --disable-shared
-```
-
-In `ext/tinydtls/sha2/sha2.h`, remove the `#if 0/endif` parts:
-
-```
-#if 0¬
-typedef unsigned char u_int8_t;| |  /* 1-byte  (8-bits)  */¬
-typedef unsigned int u_int32_t;| |  /* 4-bytes (32-bits) */¬
-typedef unsigned long long u_int64_t;| /* 8-bytes (64-bits) */¬
-#endif¬
-```
-
-In `include/coap/coap_time.h`, put the following import statement at the top of the file:
-
-`#include <time.h>`
-
-Now finish the installation:
-
-```
+# Next 2 lines are volatile and may not work with future versions. These hacks are just too ugly.
+sed -i "s/#if 0/#if 1/g" ext/tinydtls/sha2/sha2.h
+sed -i "17i#include <time.h>" include/coap/coap_time.h
 make && make install
 ```
